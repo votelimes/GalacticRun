@@ -78,10 +78,11 @@ public:
     using GameObject::GameObject;
     const int maxHealthPoints = 100;
     int healthPoints = 100;
-    std::vector<GameObject> parts{};
+    //std::vector<GameObject> parts{};
     bool borderReached{};
     void calcBias() override;
-    double xNoise{}, yNoise{};
+    std::pair<double, double> gunPoint;
+    
 protected:
     void draw(GLFWwindow* window) override;
 };

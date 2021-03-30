@@ -3,7 +3,7 @@
 // Global variables
 std::list <GameObject *> *gameObjects = new std::list <GameObject *>();
 std::list <PlayerShipShot *> *playerShipShots = new std::list <PlayerShipShot *>();
-bool stopAnim = false;
+bool stopAnim = true;
 
 BasicFighter *playerShip = new BasicFighter(0.0, 0.0, 0.1, 0.1, false, 100);
 
@@ -55,6 +55,8 @@ int main(){
       std::list<GameObject*>::iterator gameObject = gameObjects->begin(); 
       std::list<PlayerShipShot*>::iterator shotObject = playerShipShots->begin();
 
+      playerShip->update(mainWindow.getContext());
+
       if(stopAnim == false){
 
           while (gameObject != gameObjects->end()){
@@ -99,7 +101,7 @@ int main(){
       }
       
       glfwPollEvents();
-    //
+      glfwSwapBuffers(mainWindow.getContext()); // !!!REMOVE THIS!!!
       if(glfwWindowShouldClose(mainWindow.getContext()) != 0){
         break;
       }

@@ -168,8 +168,41 @@ void BasicFighter::calcBias(){
 
 void BasicFighter::draw(GLFWwindow* window) {  
      
-     calcBias();
- 
+    calcBias();
+    static double bodyTriangle1 = 0.05;
+    static double bodyCircleRadius1 = 0.02;
+    static double bodyCircleRadius2 = 0.01;
+    static double bodyRectangleGunX1 = 0.01;
+    static double bodyRectangleGunY1 = 0.07;
+
+    static double bodyRectangleGunX2 = 0.004;
+    static double bodyRectangleGunY2 = 0.014;
+
+    static double bodyRectangleWindowX1 = 0.006;
+    static double bodyRectangleWindowY1 = 0.040;
+    static double bodyRectangleWindowX2 = 0.002;
+    static double bodyRectangleWindowY2 = 0.022;
+
+    
+    drawTriangle(xPos - bodyTriangle1, yPos, xPos, yPos, xPos, yPos + bodyTriangle1, 255, 255, 200);
+    drawTriangle(xPos, yPos + bodyTriangle1, xPos, yPos, xPos + bodyTriangle1, yPos, 255, 255, 200);
+    drawFilledCircle(xPos, yPos, bodyCircleRadius1, 90, 255, 255, 255);
+    drawFilledCircle(xPos, yPos, bodyCircleRadius2, 90, 255, 255, 255);
+    // Main gun 1st part
+    drawRectangle(xPos - bodyRectangleGunX1, yPos + bodyRectangleGunY1, xPos, yPos, 240, 200, 200);
+    drawRectangle(xPos, yPos + bodyRectangleGunY1, xPos + bodyRectangleGunX1, yPos, 240, 200, 200);
+    // Main gun 2nd part
+    drawRectangle(xPos - bodyRectangleGunX1, yPos + bodyRectangleGunY1 + bodyRectangleGunY2, xPos - bodyRectangleGunX1 + 
+    bodyRectangleGunX2, yPos + bodyRectangleGunY1, 255, 15, 15);
+    drawRectangle(xPos + bodyRectangleGunX1 - bodyRectangleGunX2, yPos + bodyRectangleGunY1 + bodyRectangleGunY2, 
+    xPos + bodyRectangleGunX1, yPos + bodyRectangleGunY1, 255, 15, 15);
+    // Windows
+    drawRectangle(xPos - bodyRectangleWindowX1, yPos + bodyRectangleWindowY1, 
+    xPos - bodyRectangleWindowX2, yPos + bodyRectangleWindowY2, 0, 0, 255);
+    drawRectangle(xPos + bodyRectangleWindowX2, yPos + bodyRectangleWindowY1, 
+    xPos + bodyRectangleWindowX1, yPos + bodyRectangleWindowY2, 0, 0, 200);
+
+    return;
     // Body
     drawRectangleS(0.0 + xBias, 0.0 + yBias, 0.12, 0.02, 102, 102, 153);
     drawRectangleS(0.0 + xBias, 0.015 + yBias, 0.015, 0.08, 102, 102, 153);
@@ -179,8 +212,7 @@ void BasicFighter::draw(GLFWwindow* window) {
     drawRectangleS(0.04 + xBias, 0.015 + yBias, 0.04, 0.015, 0, 150, 255);
     drawRectangleS(0.045 + xBias, 0.025 + yBias, 0.030, 0.015, 100, 150, 255);
     drawRectangleS(0.050 + xBias, 0.035 + yBias, 0.020, 0.04, 0, 255, 255);
-    xNoise = 0.060 + xBias;
-    yNoise = 0.097 + yBias;
+    
     drawRectangleS(0.050 + xBias, 0.075 + yBias, 0.004, 0.02, 255, 0, 0);
     drawRectangleS(0.066 + xBias, 0.075 + yBias, 0.004, 0.02, 255, 0, 0);
 

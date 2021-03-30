@@ -44,21 +44,22 @@ void drawRectangle(double x1, double y1, double x2, double y2, int r, int g, int
 
     glBegin(GL_POLYGON);
     glVertex2d(x1, y1);
-    glVertex2d(x2, y1);
-    glVertex2d(x2, y2);
     glVertex2d(x1, y2);
+    glVertex2d(x2, y2);
+    glVertex2d(x2, y1);
     glEnd();
 }
 
 void drawRectangleS(double x, double y, double width, double height, int r, int g, int b){
     
-    double x1 = x;
-    double y1 = y;
-
-    double x2 = x + width;
-    double y2 = y + height;
+    glColor3ub(r, g, b);
     
-    drawRectangle(x1, y1, x2, y2, r, g, b);
+    glBegin(GL_POLYGON);
+    glVertex2d(x, y + height);
+    glVertex2d(x, y);
+    glVertex2d(x + width, y);
+    glVertex2d(x + width, y + height);
+    glEnd();
 }
 
 void drawQuad(double x, double y, double length, int r, int g, int b){
