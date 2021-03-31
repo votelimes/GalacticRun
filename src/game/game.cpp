@@ -143,20 +143,20 @@ void TieFighter::draw(GLFWwindow* window) {
 
 void BasicFighter::calcBias(){
     if(movingLeft && xBias > -0.95){
-        xBias -= speed;
+        xPos -= speed;
         //movingLeft = false;
     }
     else if(movingRight && xBias < 0.82){
-        xBias += speed;
+        xPos += speed;
         //movingRight = false;
     }
 
     if(movingTop && yBias < 0.8){
-        yBias += speed;
+        yPos += speed;
         //movingTop = false;
     }
     else if(movingBottom && yBias > -0.95){
-        yBias -= speed;
+        yPos -= speed;
         //movingBottom = false;
     }
 
@@ -169,9 +169,12 @@ void BasicFighter::calcBias(){
 void BasicFighter::draw(GLFWwindow* window) {  
      
     calcBias();
+
     static double bodyTriangle1 = 0.05;
-    static double bodyCircleRadius1 = 0.02;
-    static double bodyCircleRadius2 = 0.01;
+    
+    static double bodyEllipseRadiusX = 0.008;
+    static double bodyEllipseRadiusY = 0.022;
+    
     static double bodyRectangleGunX1 = 0.01;
     static double bodyRectangleGunY1 = 0.07;
 
@@ -183,14 +186,30 @@ void BasicFighter::draw(GLFWwindow* window) {
     static double bodyRectangleWindowX2 = 0.002;
     static double bodyRectangleWindowY2 = 0.022;
 
-    
-    drawTriangle(xPos - bodyTriangle1, yPos, xPos, yPos, xPos, yPos + bodyTriangle1, 255, 255, 200);
-    drawTriangle(xPos, yPos + bodyTriangle1, xPos, yPos, xPos + bodyTriangle1, yPos, 255, 255, 200);
-    drawFilledCircle(xPos, yPos, bodyCircleRadius1, 90, 255, 255, 255);
-    drawFilledCircle(xPos, yPos, bodyCircleRadius2, 90, 255, 255, 255);
+    static GLubyte *bodyColorTriangle1L = new GLubyte[9] {255, 0, 0, 255, 0, 255, 0, 0, 255};
+    static GLubyte *bodyColorTriangle1R = new GLubyte[9] {0, 0, 255, 255, 0, 255, 255, 0, 0};
+
+    static GLubyte *bodyColorTriangle2L = new GLubyte[9] {255, 0, 0, 0, 204, 0, 0, 0, 255};
+    static GLubyte *bodyColorTriangle2R = new GLubyte[9] {0, 0, 255, 0, 204, 0, 255, 0, 0};
+    static GLubyte *bodyColorTriangle2T = new GLubyte[9] {255, 255, 255, 255, 255, 255, 255, 255, 255};
+
+    static GLubyte *bodyColorEllipse = new GLubyte[6] {255, 0, 0, 255, 166, 77};
+
+    drawFilledEllipse(xPos, yPos, bodyEllipseRadiusX, bodyEllipseRadiusY, 30, bodyColorEllipse);
+
+    drawTriangle(xPos - bodyTriangle1, yPos, xPos, yPos, xPos, yPos + bodyTriangle1, bodyColorTriangle1L);
+    drawTriangle(xPos - bodyTriangle1 + 0.010, yPos + 0.005, xPos - 0.010, yPos + 0.005, 
+    xPos - 0.010, yPos + bodyTriangle1 - 0.015, bodyColorTriangle2L);
+
+    drawTriangle(xPos, yPos + bodyTriangle1, xPos, yPos, xPos + bodyTriangle1, yPos, bodyColorTriangle1R);
+    drawTriangle(xPos + 0.010, yPos + bodyTriangle1 - 0.015, xPos + 0.010, yPos + 0.005, 
+    xPos + bodyTriangle1 - 0.010, yPos + 0.005, bodyColorTriangle2R);
     // Main gun 1st part
-    drawRectangle(xPos - bodyRectangleGunX1, yPos + bodyRectangleGunY1, xPos, yPos, 240, 200, 200);
-    drawRectangle(xPos, yPos + bodyRectangleGunY1, xPos + bodyRectangleGunX1, yPos, 240, 200, 200);
+    drawRectangle(xPos - bodyRectangleGunX1, yPos + bodyRectangleGunY1, xPos, yPos - 0.004, 92, 92, 138);
+    drawRectangle(xPos, yPos + bodyRectangleGunY1, xPos + bodyRectangleGunX1, yPos - 0.004, 92, 92, 138);
+
+    drawLine(xPos - bodyRectangleGunX1 + 0.005, yPos, xPos - 0.015, yPos - 0.02, 2, 92, 92, 138);
+    drawLine(xPos + bodyRectangleGunX1 - 0.005, yPos, xPos + 0.015, yPos - 0.02, 2, 92, 92, 138);
     // Main gun 2nd part
     drawRectangle(xPos - bodyRectangleGunX1, yPos + bodyRectangleGunY1 + bodyRectangleGunY2, xPos - bodyRectangleGunX1 + 
     bodyRectangleGunX2, yPos + bodyRectangleGunY1, 255, 15, 15);
@@ -201,34 +220,6 @@ void BasicFighter::draw(GLFWwindow* window) {
     xPos - bodyRectangleWindowX2, yPos + bodyRectangleWindowY2, 0, 0, 255);
     drawRectangle(xPos + bodyRectangleWindowX2, yPos + bodyRectangleWindowY1, 
     xPos + bodyRectangleWindowX1, yPos + bodyRectangleWindowY2, 0, 0, 200);
-
-    return;
-    // Body
-    drawRectangleS(0.0 + xBias, 0.0 + yBias, 0.12, 0.02, 102, 102, 153);
-    drawRectangleS(0.0 + xBias, 0.015 + yBias, 0.015, 0.08, 102, 102, 153);
-    drawRectangleS(0.105 + xBias, 0.015 + yBias, 0.015, 0.08, 102, 102, 153);
-
-    // Main gun
-    drawRectangleS(0.04 + xBias, 0.015 + yBias, 0.04, 0.015, 0, 150, 255);
-    drawRectangleS(0.045 + xBias, 0.025 + yBias, 0.030, 0.015, 100, 150, 255);
-    drawRectangleS(0.050 + xBias, 0.035 + yBias, 0.020, 0.04, 0, 255, 255);
-    
-    drawRectangleS(0.050 + xBias, 0.075 + yBias, 0.004, 0.02, 255, 0, 0);
-    drawRectangleS(0.066 + xBias, 0.075 + yBias, 0.004, 0.02, 255, 0, 0);
-
-    // Lower wings
-    drawTriangle(0.0 + xBias, 0.0 + yBias, 0.0 + xBias, 0.04 + yBias, -0.03 + xBias, 0.0 + yBias, 139, 139, 152);
-    drawTriangle(0.12 + xBias, 0.0 + yBias, 0.12 + xBias, 0.04 + yBias, 0.15 + xBias, 0.0 + yBias, 139, 139, 152);
-
-    // Upper wings
-    drawTriangle(0.0 + xBias, 0.095 + yBias, 0.0 + xBias, 0.06 + yBias, -0.08 + xBias, 0.00 + yBias, 0, 102, 102);
-    drawTriangle(0.12 + xBias, 0.095 + yBias, 0.12 + xBias, 0.06 + yBias, 0.20 + xBias, 0.0 + yBias, 0, 102, 102);
-
-    // Engines
-    drawFilledHalfCircleLower(0.03 + xBias, 0.0 + yBias, 0.018, 40, 252, 57, 3);
-    drawFilledHalfCircleLower(0.09 + xBias, 0.0 + yBias, 0.018, 40, 252, 57, 3);
-    drawFilledHalfCircleLower(0.03 + xBias, 0.0 + yBias, 0.01, 40, 252, 153, 3);
-    drawFilledHalfCircleLower(0.09 + xBias, 0.0 + yBias, 0.01, 40, 252, 153, 3);
 }
 
 PlayerShipShot::PlayerShipShot(double xPos, double yPos, double width, double height)

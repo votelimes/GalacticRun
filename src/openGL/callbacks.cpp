@@ -20,7 +20,7 @@ void keyCallback (GLFWwindow* window, int key, int scanCode, int action, int mod
             playerShip->moveBottom();
         }
         else if(key == GLFW_KEY_SPACE){
-            //playerShipShots->push_back(new PlayerShipShot(playerShip->xNoise - 0.004, playerShip->yNoise, 0.01, 0.02));
+            playerShipShots->push_back(new PlayerShipShot(playerShip->xPos - 0.004, playerShip->yPos + 0.086, 0.01, 0.02));
         }
         else if(key == GLFW_KEY_S){
             if(stopAnim){

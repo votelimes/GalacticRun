@@ -17,7 +17,7 @@ void drawLine(double x1, double y1, double x2, double y2, int width, int r, int 
     glLineWidth(width); 
     glColor3ub(r, g, b);
 
-    glBegin(GL_POINTS);
+    glBegin(GL_LINES);
 
     glVertex2d(x1, y1);
     glVertex2d(x2, y2);
@@ -32,6 +32,20 @@ void drawTriangle(double x1, double y1, double x2, double y2, double x3, double 
 
     glVertex2d(x1, y1);
     glVertex2d(x2, y2);
+    glVertex2d(x3, y3);
+
+    glEnd();
+
+}
+
+void drawTriangle(double x1, double y1, double x2, double y2, double x3, double y3, GLubyte *CA){
+    
+    glBegin(GL_TRIANGLES);
+    glColor3ub(CA[0], CA[1], CA[2]);
+    glVertex2d(x1, y1);
+    glColor3ub(CA[3], CA[4], CA[5]);
+    glVertex2d(x2, y2);
+    glColor3ub(CA[6], CA[7], CA[8]);
     glVertex2d(x3, y3);
 
     glEnd();
@@ -87,12 +101,44 @@ void drawFilledEllipse(double x, double y, double xRadius, double yRadius, int p
 	glEnd();
 }
 
+void drawFilledEllipse(double x, double y, double xRadius, double yRadius, int precision, GLubyte *CA){
+	
+    glColor3ub(CA[0], CA[1], CA[2]);
+	
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2d(x, y);
+    glColor3ub(CA[3], CA[4], CA[5]);
+    for(auto i = 0; i <= precision;i++) {
+        glVertex2d(
+                x + (xRadius * cos(i *  2.0 * M_PI / precision)), 
+            y + (yRadius * sin(i * 2.0 * M_PI / precision))
+        );
+    }
+	glEnd();
+}
+
 void drawFilledCircle(double x, double y, double radius, int precision, int r, int g, int b){
 	
     glColor3ub(r, g, b);
 	
     glBegin(GL_TRIANGLE_FAN);
     glVertex2d(x, y); // center of circle
+    for(auto i = 0; i <= precision;i++) { 
+        glVertex2d(
+                x + (radius * cos(i *  2.0 * M_PI / precision)), 
+            y + (radius * sin(i * 2.0 * M_PI / precision))
+        );
+    }
+	glEnd();
+}
+
+void drawFilledCircle(double x, double y, double radius, int precision, int r1, int g1, int b1, int r2, int g2, int b2){
+	
+    glColor3ub(r1, g1, b1);
+	
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2d(x, y); // center of circle
+    glColor3ub(r2, g2, b2);
     for(auto i = 0; i <= precision;i++) { 
         glVertex2d(
                 x + (radius * cos(i *  2.0 * M_PI / precision)), 
@@ -123,6 +169,7 @@ void drawFilledHalfCircleLower(double x, double y, double radius, int precision,
 	
     glBegin(GL_TRIANGLE_FAN);
     glVertex2d(x, y); // center of circle
+    
     for(auto i = 0; i <= precision;i++) { 
         glVertex2d(
                 x + (radius * cos(i *  M_PI / precision)), 
